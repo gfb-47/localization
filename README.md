@@ -1,16 +1,18 @@
-# localization
+# Localization Challenge
 
-A new Flutter project.
+Flutter Version: Flutter 3.3.9
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+First things first, you may need to add a file at "android/app/src/main/res/values/keys.xml". And then  add the code down below inserting a Google Maps APIKEY which can be created [here](https://mapsplatform.google.com/).
 
-A few resources to get you started if this is your first Flutter project:
+The challenge description mentioned that it wasn't necessary to use any API Keys, from my research, this is not possible since July 2018. So I came up with this .xml so I wouldn't expose my API Key to the whole web.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        PASTE YOUR KEY HERE
+    </string>
+</resources>
+```

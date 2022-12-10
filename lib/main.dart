@@ -25,16 +25,20 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
 
-  static CameraPosition? _random;
+  CameraPosition? _random;
+  GoogleMapController? _googleMapController;
 
   @override
   void initState() {
     _random = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(generateRandomLat(), generateRandomLong()),
-        tilt: 39.44032436555,
-        zoom: 19.151926040649414);
+        target: LatLng(37.432068, -122.087755), zoom: 19.151926040649414);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _googleMapController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,40 +48,67 @@ class MapSampleState extends State<MapSample> {
         GoogleMap(
           mapType: MapType.normal,
           initialCameraPosition: _random!,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
+          zoomControlsEnabled: false,
+          myLocationButtonEnabled: false,
         ),
         Positioned(
-          bottom: 5,
+          bottom: 15,
+          width: 200,
           child: ElevatedButton(
             onPressed: () => print('a'),
-            child: Text('Bring me back home'),
+            child: Text(
+              'Bring me back home',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
             style: ButtonStyle(
+                elevation: MaterialStateProperty.all<double>(5),
+                padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: const Color(0xff9A2EEF)))),
                 backgroundColor:
                     MaterialStateProperty.all(const Color(0xff9A2EEF))),
           ),
         ),
         Positioned(
-          bottom: 50,
-          width: 150,
+          bottom: 85,
+          width: 200,
           child: ElevatedButton(
               onPressed: () => print('a'),
               style: ButtonStyle(
+                  elevation: MaterialStateProperty.all<double>(5),
                   padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: const Color(0xff2EC1EF)))),
                   backgroundColor:
                       MaterialStateProperty.all(const Color(0xff2EC1EF))),
-              child: Text('Teleport me to somewhere random')),
+              child: Text(
+                'Teleport me to somewhere random',
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              )),
         ),
       ]),
     );
   }
 
   double generateRandomLat() {
-    return -90 + Random().nextDouble() * 90 * 2;
+    var a = nextDouble(-90, 90);
+    return a;
   }
 
   double generateRandomLong() {
-    return -180 + Random().nextDouble() * 180 * 2;
+    var a = nextDouble(-180, 180);
+    return a;
+  }
+
+  double nextDouble(num min, num max) {
+    final random = Random();
+
+    return min + random.nextDouble() * (max - min);
   }
 }
