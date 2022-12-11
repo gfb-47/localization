@@ -24,3 +24,7 @@ The challenge description mentioned that it wasn't necessary to use any API Keys
 ## Conclusions of the challenge
 
 Yes, most part of the random locations will be on the ocean 👍🏻😂
+
+## Images
+
+![Screenshot 2022-12-11 at 17 22 37](https://user-images.githubusercontent.com/46033500/206926889-c4edfe6f-ea0d-4d84-b3bf-9a3487cd6687.png)
