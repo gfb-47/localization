@@ -46,7 +46,6 @@ class HomePageState extends State<HomePage> {
         )),
   ];
 
-  // created method for getting user current location
   Future<Position> getUserCurrentLocation() async {
     await Geolocator.requestPermission()
         .then((value) {})
@@ -99,7 +98,6 @@ class HomePageState extends State<HomePage> {
                       logger(
                           '${value.latitude.toString()} ${value.longitude.toString()}');
 
-                      // marker added for current users location
                       _markers.add(Marker(
                         markerId: const MarkerId('2'),
                         position: LatLng(value.latitude, value.longitude),
@@ -108,7 +106,6 @@ class HomePageState extends State<HomePage> {
                         ),
                       ));
 
-                      // specified current users location
                       final CameraPosition cameraPosition = CameraPosition(
                         target: LatLng(value.latitude, value.longitude),
                         zoom: 14,
@@ -136,7 +133,6 @@ class HomePageState extends State<HomePage> {
                             '${value.latitude.toString()} ${value.longitude.toString()}');
                         var latLng =
                             LatLng(generateRandomLat(), generateRandomLong());
-                        // marker added for current users location
                         _markers.add(Marker(
                           markerId: const MarkerId('2'),
                           position: latLng,
@@ -145,7 +141,6 @@ class HomePageState extends State<HomePage> {
                           ),
                         ));
 
-                        // specified current users location
                         final CameraPosition cameraPosition = CameraPosition(
                           target: latLng,
                           zoom: 14,
@@ -164,7 +159,6 @@ class HomePageState extends State<HomePage> {
                         showDialog<void>(
                           barrierColor: Colors.transparent,
                           context: context,
-                          barrierDismissible: true, // user must tap button!
                           builder: (BuildContext context) {
                             return Dialog(
                               insetPadding: const EdgeInsets.all(20),
