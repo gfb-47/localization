@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 
 import 'components/components.dart';
+import 'components/dialog.dart';
+import 'database.dart';
 import 'lat_long_model.dart';
 import 'utils/utils.dart';
 
@@ -21,10 +22,20 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  late Box<Map<String, dynamic>> box;
   final Completer<GoogleMapController> _controller = Completer();
   var latLongList = <LatLongModel>[];
   CameraPosition? _myPosition;
+  void initDb() async {
+    await DatabaseRepository.instance.database;
+  }
+
+  void addLatLng(LatLongModel latLng) async {
+    await DatabaseRepository.instance.insert(
+        latLng: LatLongModel(
+            id: latLng.id,
+            latitude: latLng.latitude,
+            longitude: latLng.longitude));
+  }
 
   final List<Marker> _markers = <Marker>[
     const Marker(
@@ -58,12 +69,9 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _openBox();
+    initDb();
     _setMyPosition();
     super.initState();
-  }
-
-  Future<void> _openBox() async {
   }
 
   @override
@@ -147,52 +155,85 @@ class HomePageState extends State<HomePage> {
                             await _controller.future;
                         controller.animateCamera(
                             CameraUpdate.newCameraPosition(cameraPosition));
-                        await box.put(
-                            const Uuid().v4(),
-                            LatLongModel(
-                                    latitude: latLng.latitude,
-                                    longitude: latLng.longitude)
-                                .toMap());
-
-                        latLongList.clear();
+                        addLatLng(LatLongModel(
+                            latitude: latLng.latitude,
+                            longitude: latLng.longitude));
                         latLongList.addAll(
-                            box.values.map((e) => LatLongModel.fromMap(e)));
-                        // latLongList.addAll(a);
-                        print(latLongList.length);
-                        // showDialog<void>(
-                        //   context: context,
-                        //   barrierDismissible: false, // user must tap button!
-                        //   builder: (BuildContext context) {
-                        //     return SizedBox(
-                        //       height: 100,
-                        //       child: AlertDialog(
-                        //         title: const Text('AlertDialog Title'),
-                        //         content:
-                        //             ListView.builder(itemBuilder: (_, index) {
-                        //           return Row(
-                        //             children: [
-                        //               Text(latLongList[index]
-                        //                   .latitude
-                        //                   .toString()),
-                        //               Text(latLongList[index]
-                        //                   .longitude
-                        //                   .toString()),
-                        //             ],
-                        //           );
-                        //         }),
-                        //         actions: <Widget>[
-                        //           TextButton(
-                        //             child: const Text('OK'),
-                        //             onPressed: () {
-                        //               Navigator.of(context).pop();
-                        //             },
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     );
-                        //   },
-                        // );
+                            await DatabaseRepository.instance.getAllLatLngs());
                         setState(() {});
+                        showDialog<void>(
+                          barrierColor: Colors.transparent,
+                          context: context,
+                          barrierDismissible: true, // user must tap button!
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              insetPadding: const EdgeInsets.all(20),
+                              backgroundColor:
+                                  Color.fromRGBO(196, 196, 196, 0.83),
+                              child: SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                    itemCount: latLongList.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (_, index) {
+                                      if (index == 0) {
+                                        return Column(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                              child: Text(
+                                                'Current Location',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Text(
+                                              'Latitude: ${latLongList.last.latitude}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
+                                            ),
+                                            Text(
+                                              'Longitude: ${latLongList.last.longitude}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
+                                            ),
+                                            const SizedBox(height: 15),
+                                          ],
+                                        );
+                                      }
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Lat: ${latLongList[index].latitude.toStringAsFixed(2)}, ',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
+                                            ),
+                                            Text(
+                                              'Long: ${latLongList[index].longitude.toStringAsFixed(2)},',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            );
+                          },
+                        );
                       });
                     },
                     title: AppConsts.teleportSomewhereText,

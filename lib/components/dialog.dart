@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TextFieldAlertDialog extends StatelessWidget {
   TextEditingController _textFieldController = TextEditingController();
 
-  _displayDialog(BuildContext context) async {
+  displayDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
