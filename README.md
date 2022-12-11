@@ -20,7 +20,6 @@ The challenge description mentioned that it wasn't necessary to use any API Keys
 ## Could be improved
 
 - [ ] If the user didn't allowed localization permissions, show a modal which will guide the user to permission settings of the device.
-- [ ] Use a better DB which support testing
 
 ## Conclusions of the challenge
 

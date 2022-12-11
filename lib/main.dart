@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'database.dart';
-import 'page/home_page.dart';
+import 'pages/home_page.dart';
+import 'providers/localization_provider.dart';
 import 'utils/utils.dart';
 
 void main() async {
@@ -9,10 +11,15 @@ void main() async {
   await DatabaseRepository.instance.database;
 
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: LocThemeData.data,
-      home: const HomePage(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocalizationProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: LocThemeData.data,
+        home: const HomePage(),
+      ),
     ),
   );
 }
