@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'components/components.dart';
-import 'components/dialog.dart';
 import 'database.dart';
 import 'lat_long_model.dart';
 import 'utils/utils.dart';
@@ -25,11 +23,11 @@ class HomePageState extends State<HomePage> {
   final Completer<GoogleMapController> _controller = Completer();
   var latLongList = <LatLongModel>[];
   CameraPosition? _myPosition;
-  void initDb() async {
+  Future<void> initDb() async {
     await DatabaseRepository.instance.database;
   }
 
-  void addLatLng(LatLongModel latLng) async {
+  Future<void> addLatLng(LatLongModel latLng) async {
     await DatabaseRepository.instance.insert(
         latLng: LatLongModel(
             id: latLng.id,
@@ -131,7 +129,7 @@ class HomePageState extends State<HomePage> {
                       getUserCurrentLocation().then((value) async {
                         logger(
                             '${value.latitude.toString()} ${value.longitude.toString()}');
-                        var latLng =
+                        final latLng =
                             LatLng(generateRandomLat(), generateRandomLong());
                         _markers.add(Marker(
                           markerId: const MarkerId('2'),
@@ -160,71 +158,7 @@ class HomePageState extends State<HomePage> {
                           barrierColor: Colors.transparent,
                           context: context,
                           builder: (BuildContext context) {
-                            return Dialog(
-                              insetPadding: const EdgeInsets.all(20),
-                              child: SizedBox(
-                                height: 350,
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                child: ListView.builder(
-                                    itemCount: latLongList.length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (_, index) {
-                                      if (index == 0) {
-                                        return Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                              child: Text(
-                                                'Current Location',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 15),
-                                            Text(
-                                              'Latitude: ${latLongList.last.latitude}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            Text(
-                                              'Longitude: ${latLongList.last.longitude}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            const SizedBox(height: 15),
-                                          ],
-                                        );
-                                      }
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Lat: ${latLongList[index].latitude.toStringAsFixed(2)}, ',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            Text(
-                                              'Long: ${latLongList[index].longitude.toStringAsFixed(2)},',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                              ),
-                            );
+                            return CustomDialog(list: latLongList);
                           },
                         );
                       });

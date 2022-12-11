@@ -14,7 +14,7 @@ void main() async {
         ),
         textTheme: const TextTheme(
           titleSmall: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 17, fontWeight: FontWeight.w700),
         ),
       ),
       home: const HomePage(),
