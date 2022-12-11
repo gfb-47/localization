@@ -27,11 +27,11 @@ class DatabaseRepository {
 
   Future _createDatabase(Database db, int version) async {
     await db.execute('''
-create table ${AppConsts.tableName} ( 
-  ${AppConsts.id} integer primary key autoincrement, 
-  ${AppConsts.latitude} real not null,
-   ${AppConsts.longitude} real not null)
-''');
+    create table ${AppConsts.tableName} ( 
+      ${AppConsts.id} integer primary key autoincrement, 
+      ${AppConsts.latitude} real not null,
+      ${AppConsts.longitude} real not null)
+    ''');
   }
 
   Future<void> addLatLngs({required LatLongModel latLng}) async {

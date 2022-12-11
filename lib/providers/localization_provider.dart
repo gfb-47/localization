@@ -8,12 +8,12 @@ import '../database.dart';
 import '../models/lat_long_model.dart';
 import '../utils/utils.dart';
 
+const _backupLat = 37.432068;
+const _backupLong = -122.087755;
+
 class LocalizationProvider with ChangeNotifier {
   var latLongList = <LatLongModel>[];
   CameraPosition? myPosition;
-
-  final backupLat = 37.432068;
-  final backupLong = -122.087755;
 
   double _generateRandomLat() {
     return _nextDouble(-90, 90);
@@ -65,8 +65,8 @@ class LocalizationProvider with ChangeNotifier {
       getUserCurrentLocation().then((value) async {
         late CameraPosition cameraPosition;
         if (value == null) {
-          cameraPosition = CameraPosition(
-            target: LatLng(backupLat, backupLong),
+          cameraPosition = const CameraPosition(
+            target: LatLng(_backupLat, _backupLong),
             zoom: 14,
           );
         } else {
@@ -88,8 +88,8 @@ class LocalizationProvider with ChangeNotifier {
     try {
       final result = await getUserCurrentLocation();
       if (result == null) {
-        myPosition = CameraPosition(
-          target: LatLng(backupLat, backupLong),
+        myPosition = const CameraPosition(
+          target: LatLng(_backupLat, _backupLong),
           zoom: 14,
         );
       } else {
