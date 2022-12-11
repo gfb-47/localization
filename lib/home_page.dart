@@ -168,10 +168,9 @@ class HomePageState extends State<HomePage> {
                           builder: (BuildContext context) {
                             return Dialog(
                               insetPadding: const EdgeInsets.all(20),
-                              backgroundColor:
-                                  Color.fromRGBO(196, 196, 196, 0.83),
                               child: SizedBox(
-                                height: 200,
+                                height: 350,
+                                width: MediaQuery.of(context).size.width * 0.75,
                                 child: ListView.builder(
                                     itemCount: latLongList.length,
                                     shrinkWrap: true,
