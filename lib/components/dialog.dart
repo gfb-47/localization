@@ -94,7 +94,7 @@ class LocDialog extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(130),
                   child: const Cutout(
-                    color: Colors.black,
+                    color: Color(0xff372929),
                     child: Icon(
                       Icons.close_outlined,
                       size: 30,
