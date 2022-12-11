@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../lat_long_model.dart';
+import '../models/lat_long_model.dart';
 import '../utils/utils.dart';
 import 'components.dart';
 
 @immutable
-class CustomDialog extends StatelessWidget {
-  List<LatLongModel> list;
-  CustomDialog({super.key, required this.list});
+class LocDialog extends StatelessWidget {
+  final List<LatLongModel> list;
+  const LocDialog({super.key, required this.list});
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +32,14 @@ class CustomDialog extends StatelessWidget {
             ),
             margin: const EdgeInsets.only(top: 13.0, right: 8.0),
             decoration: BoxDecoration(
-                color: const Color.fromRGBO(196, 196, 196, 0.83),
-                borderRadius: BorderRadius.circular(16.0),
-                boxShadow: const <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.transparent,
-                  ),
-                ]),
+              color: const Color.fromRGBO(196, 196, 196, 0.83),
+              borderRadius: BorderRadius.circular(16.0),
+              boxShadow: const <BoxShadow>[
+                BoxShadow(
+                  color: Colors.transparent,
+                ),
+              ],
+            ),
             child: ListView.builder(
                 itemCount: list.length,
                 shrinkWrap: true,
@@ -87,9 +88,7 @@ class CustomDialog extends StatelessWidget {
           Positioned(
             right: 0.0,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+              onTap: () => Navigator.of(context).pop(),
               child: Align(
                 alignment: Alignment.topRight,
                 child: ClipRRect(

@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'database.dart';
+import 'page/home_page.dart';
+import 'utils/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseRepository.instance.database;
 
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        dialogTheme: const DialogTheme(
-          backgroundColor: Color.fromRGBO(196, 196, 196, 0.83),
-        ),
-        textTheme: const TextTheme(
-          titleSmall: TextStyle(
-              color: Colors.white, fontSize: 17, fontWeight: FontWeight.w700),
-        ),
-      ),
+      theme: LocThemeData.data,
       home: const HomePage(),
     ),
   );
