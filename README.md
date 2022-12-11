@@ -27,4 +27,4 @@ Yes, most part of the random locations will be on the ocean 👍🏻😂
 
 ## Images
 
-![Screenshot 2022-12-11 at 17 22 37](https://user-images.githubusercontent.com/46033500/206926889-c4edfe6f-ea0d-4d84-b3bf-9a3487cd6687.png)
+![Screenshot 2022-12-11 at 17 23 41](https://user-images.githubusercontent.com/46033500/206926941-713ec4b7-1d80-4b73-a7a5-93410f7b30c7.png)
